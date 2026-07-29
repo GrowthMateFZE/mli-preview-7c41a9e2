@@ -13,9 +13,12 @@ body > .wp-site-blocks > .wp-block-template-part { display: none !important; }
 .wp-site-blocks main > .wp-block-group,
 .wp-site-blocks .has-global-padding,
 .wp-site-blocks .is-layout-constrained {
-  padding-left: 0 !important; padding-right: 0 !important;
+  padding: 0 !important;            /* the wrapper ships 70px of top padding */
   max-width: none !important; margin-inline: 0 !important;
 }
+/* the block theme spaces sibling blocks with margin-block-start; our markup
+   supplies its own rhythm, so any injected gap is a visible seam at the top */
+.entry-content > *, .wp-block-post-content > * { margin-block: 0 !important; }
 .entry-content, .wp-block-post-content {
   max-width: none !important; margin: 0 !important; padding: 0 !important;
 }
