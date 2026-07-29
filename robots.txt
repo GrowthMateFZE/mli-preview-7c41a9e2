@@ -1,0 +1,8 @@
+# Pre-launch review build hosted by Growth Mate.
+# The client's live site is myloveintelligence.com — this staging copy must NOT
+# be indexed, or it will compete with the real site for the same content.
+# AT GO-LIVE: replace this file with an allow-all + sitemap reference, and remove
+# the <meta name="robots" content="noindex"> line from every page.
+
+User-agent: *
+Disallow: /

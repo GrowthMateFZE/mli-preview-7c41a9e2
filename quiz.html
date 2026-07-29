@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>document.documentElement.classList.add('js');</script>
+<!-- PRE-LAUNCH STAGING ONLY — remove this robots line at go-live -->
+<meta name="robots" content="noindex, nofollow">
+<title>What’s your Love Intelligence Code? — Free 3-minute quiz</title>
+<meta name="description" content="Nine gentle questions reveal the two Ways of Love your heart speaks most fluently. Free, instant, no account needed.">
+<link rel="canonical" href="https://myloveintelligence.com/quiz.html">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Relationship Medicine™">
+<meta property="og:title" content="What’s your Love Intelligence Code?">
+<meta property="og:description" content="Nine gentle questions. Three minutes. Discover the two Ways of Love your heart speaks most fluently.">
+<meta property="og:image" content="https://myloveintelligence.com/assets/uploads/whats-yours.webp">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="assets/uploads/S-Thompson_Favicon_Color.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/uploads/S-Thompson_Favicon_Color.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="quiz-page">
+
+  <header class="quiz-header">
+    <a class="brand" href="index.html" aria-label="Relationship Medicine — home">
+      <img src="assets/uploads/S-Thompson_Logo_Black.png" alt="Relationship Medicine" width="180" height="42">
+    </a>
+    <a class="quiz-header__back" href="index.html">← Back to home</a>
+  </header>
+
+  <main class="quiz-main" id="main">
+    <div data-quiz style="width:100%">
+
+      <!-- ------------------------------------------------------ intro -->
+      <section class="quiz-screen quiz-intro" data-screen="intro" aria-label="Quiz introduction">
+        <img src="assets/uploads/S-Thompson_Favicon_Color.png" alt="" width="54" height="54">
+        <p class="eyebrow">The Twelve Ways of Love™</p>
+        <h1 class="h1 h1--sm">What’s your <em class="accent">Love Intelligence</em> Code?</h1>
+        <p class="lede">Nine gentle questions. There are no right answers — only your answers. At the end, you’ll see the two Ways of Love your heart speaks most fluently.</p>
+
+        <div class="quiz-chips">
+          <span class="chip">9 questions</span>
+          <span class="chip">About 3 minutes</span>
+          <span class="chip">Free · instant result</span>
+        </div>
+
+        <button class="btn btn--primary" type="button" data-quiz-begin style="padding:18px 44px;font-size:16px">Begin</button>
+      </section>
+
+      <!-- --------------------------------------------------- question -->
+      <section class="quiz-screen quiz-q" data-screen="question" aria-label="Quiz question" aria-live="polite" hidden>
+        <div class="quiz-q__top">
+          <p class="quiz-q__count">QUESTION <span data-q-num>1</span> OF <span data-q-total>9</span></p>
+          <button class="quiz-q__back" type="button" data-q-back hidden>← Previous</button>
+        </div>
+
+        <div class="progress" role="progressbar" aria-label="Quiz progress">
+          <div class="progress__bar" data-progress style="width:11%"></div>
+        </div>
+
+        <h2 class="quiz-q__text" data-q-text></h2>
+        <div data-q-options></div>
+      </section>
+
+      <!-- ----------------------------------------------------- result -->
+      <section class="quiz-screen quiz-result" data-screen="result" aria-label="Your result" hidden>
+        <div class="quiz-result__head">
+          <p class="eyebrow">Your Love Intelligence Code</p>
+          <h2 class="h2 h2--lg">You speak <em class="accent" data-primary-name></em><br>&amp; <span data-secondary-name></span></h2>
+        </div>
+
+        <div class="result-cards">
+          <article class="result-card">
+            <span class="result-card__icon result-card__icon--primary">
+              <img data-primary-icon src="assets/uploads/WORDS-OF-PRAISE-ICON.png" alt="" width="42" height="42">
+            </span>
+            <p class="result-card__label">PRIMARY WAY</p>
+            <h3 data-primary-name></h3>
+            <p class="body" data-primary-desc></p>
+          </article>
+
+          <article class="result-card">
+            <span class="result-card__icon result-card__icon--secondary">
+              <img data-secondary-icon src="assets/uploads/LISTENING-ICON-Vector-Color.png" alt="" width="42" height="42">
+            </span>
+            <p class="result-card__label result-card__label--green">SUPPORTING WAY</p>
+            <h3 data-secondary-name></h3>
+            <p class="body" data-secondary-desc></p>
+          </article>
+        </div>
+
+        <div class="prescription">
+          <p class="prescription__label">THIS WEEK’S PRESCRIPTION</p>
+          <div class="prescription__list">
+            <p><strong>Tell someone.</strong> Share your two Ways with the person closest to you — today.</p>
+            <p><strong>Watch for theirs.</strong> Notice which Ways they reach for this week, without saying anything yet.</p>
+            <p><strong>Go deeper.</strong> Your full Code guide ranks all twelve Ways and shows you what to do next.</p>
+          </div>
+        </div>
+
+        <div class="guide-offer">
+          <div>
+            <form data-guide-form novalidate>
+              <h3>Get your full Code guide — free</h3>
+              <div class="field-row" style="margin-top:14px">
+                <label class="visually-hidden" for="guide-email">Your email address</label>
+                <input class="input" id="guide-email" name="email" type="email" placeholder="Your email address" autocomplete="email" required>
+                <button class="btn btn--primary btn--sm" type="submit">Send it</button>
+              </div>
+              <p class="form-error" role="alert" hidden></p>
+            </form>
+            <p class="form-success" data-guide-success hidden>Sent with love — check your inbox.</p>
+          </div>
+          <img src="assets/uploads/join-revolution.webp" alt="Your Love Intelligence Code guide" width="150" height="190" loading="lazy">
+        </div>
+
+        <div class="quiz-result__actions">
+          <a class="btn btn--dark" href="work-with-me.html#book">Book an intro call with Dr. Shamanie</a>
+          <button class="quiz-retake" type="button" data-quiz-retake>Retake the quiz</button>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="quiz-footer">
+    © <span data-year>2026</span> Relationship Medicine LLC · The Twelve Ways of Love™ ·
+    <a href="index.html">myloveintelligence.com</a>
+  </footer>
+
+</div>
+
+<script src="assets/js/site.js" defer></script>
+<script src="assets/js/quiz.js" defer></script>
+</body>
+</html>
