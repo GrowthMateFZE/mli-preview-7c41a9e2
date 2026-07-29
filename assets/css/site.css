@@ -327,7 +327,9 @@ body.nav-open { overflow: hidden; }
 }
 .stat-card__label { font: 500 11px var(--sans); letter-spacing: .2em; color: var(--sienna); margin-bottom: 8px; }
 .stat-card__row { display: flex; align-items: baseline; gap: 12px; }
-.stat-card__num { font: 600 44px var(--serif); color: var(--terracotta); }
+/* nowrap: the en-dash in "3–5×" is a valid break opportunity, so without this
+   the figure splits across two lines. */
+.stat-card__num { font: 600 44px var(--serif); color: var(--terracotta); white-space: nowrap; }
 .stat-card__txt { font: 400 13.5px/1.45 var(--sans); color: var(--ink-75); }
 
 /* ----------------------------------------------------------- trust band -- */
