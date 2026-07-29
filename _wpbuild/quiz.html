@@ -7,6 +7,15 @@
 .wp-site-blocks > footer.wp-block-template-part,
 body > .wp-site-blocks > .wp-block-template-part { display: none !important; }
 .wp-site-blocks, .wp-site-blocks > main { margin: 0 !important; padding: 0 !important; max-width: none !important; }
+/* the theme prints the page title above the content; the design has its own H1 */
+.wp-block-post-title { display: none !important; }
+/* the constrained-layout group re-adds gutters and a max width around our markup */
+.wp-site-blocks main > .wp-block-group,
+.wp-site-blocks .has-global-padding,
+.wp-site-blocks .is-layout-constrained {
+  padding-left: 0 !important; padding-right: 0 !important;
+  max-width: none !important; margin-inline: 0 !important;
+}
 .entry-content, .wp-block-post-content {
   max-width: none !important; margin: 0 !important; padding: 0 !important;
 }
