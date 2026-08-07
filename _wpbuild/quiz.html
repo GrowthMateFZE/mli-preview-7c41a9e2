@@ -4,6 +4,7 @@
 <script>
 window.MLI_CONFIG = {
   formEndpoint: '/wp-json/contact-form-7/v1/contact-forms/68/feedback',
+  formId: 68,
   contactEmail: 'hello@myloveintelligence.com'
 };
 </script>
@@ -1254,6 +1255,14 @@ select.field {
      the status field is what actually decides success — not the HTTP code. */
   function toCF7(data, subject) {
     var fd = new FormData();
+    // CF7 rejects a submission outright ("no valid unit tag") without these
+    // control fields, even though they carry no user data.
+    var id = String(CONFIG.formId || '');
+    fd.append('_wpcf7', id);
+    fd.append('_wpcf7_version', '6.0');
+    fd.append('_wpcf7_locale', 'en_US');
+    fd.append('_wpcf7_unit_tag', 'wpcf7-f' + id + '-o1');
+    fd.append('_wpcf7_container_post', '0');
     var name = data.name || data.first_name || 'Website visitor';
     var msg  = data.message || '';
     if (data.who) msg = 'Who this is for: ' + data.who + (msg ? '\n\n' + msg : '');
