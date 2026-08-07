@@ -1,5 +1,21 @@
 <!-- wp:html -->
 <script>document.documentElement.classList.add('js');document.body.classList.add('mli-site');</script>
+
+<script>
+window.MLI_CONFIG = {
+  formEndpoint: '/wp-json/contact-form-7/v1/contact-forms/68/feedback',
+  contactEmail: 'hello@myloveintelligence.com'
+};
+</script>
+
+<!-- Feedbucket: client review widget -->
+<script type="text/javascript">(function(k){var s=document.createElement('script');s.defer=true;s.src="https://cdn.feedbucket.app/assets/feedbucket.js";s.dataset.feedbucket=k;document.head.appendChild(s);})('YZJpnQYntVd17FYyDT8j')</script>
+<!-- carry ?feedbucketKey= across internal links so the reviewer keeps the widget -->
+<script>(function(){try{var k=new URLSearchParams(location.search).get('feedbucketKey');if(!k)return;document.addEventListener('click',function(e){var a=e.target&&e.target.closest?e.target.closest('a'):null;if(!a)return;try{var u=new URL(a.href,location.origin);if(u.origin!==location.origin)return;if(!u.searchParams.get('feedbucketKey')){u.searchParams.set('feedbucketKey',k);a.href=u.toString();}}catch(err){}},true);}catch(e){}})();</script>
+
+<!-- GA4 — only on the live domain, so staging never pollutes the property -->
+<script>(function(){if(location.hostname!=='myloveintelligence.com'&&location.hostname!=='www.myloveintelligence.com')return;var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-YDVHBLJYPQ';document.head.appendChild(s);window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments);};gtag('js',new Date());gtag('config','G-YDVHBLJYPQ');})();</script>
+
 <style>
 
 /* ---- neutralise Twenty Twenty-Five chrome (the design supplies its own) ---- */
@@ -1262,6 +1278,24 @@ select.field {
            '&body=' + encodeURIComponent(lines.join('\n'));
   }
 
+  /* Contact Form 7 receives the submission. It expects multipart form-data with
+     its own field names, so the design's fields are mapped onto them here rather
+     than renaming inputs in the markup (the markup is the approved design).
+     CF7 also answers 200 with a JSON status even when it rejects the input, so
+     the status field is what actually decides success — not the HTTP code. */
+  function toCF7(data, subject) {
+    var fd = new FormData();
+    var name = data.name || data.first_name || 'Website visitor';
+    var msg  = data.message || '';
+    if (data.who) msg = 'Who this is for: ' + data.who + (msg ? '\n\n' + msg : '');
+    if (!msg) msg = '(no message — ' + (subject || 'submission') + ')';
+    fd.append('your-name', name);
+    fd.append('your-email', data.email || '');
+    fd.append('your-subject', subject || 'Website enquiry');
+    fd.append('your-message', msg);
+    return fd;
+  }
+
   /* Sends a payload. Resolves true on delivery, false if it must be handed
      off to the visitor's mail client. */
   function deliver(data, subject) {
@@ -1272,11 +1306,20 @@ select.field {
     }
     return fetch(FORM_ENDPOINT, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify(data)
+      headers: { 'Accept': 'application/json' },
+      body: toCF7(data, subject)
     }).then(function (res) {
-      if (!res.ok) throw new Error('Bad response ' + res.status);
-      return true;
+      return res.json().catch(function () { return {}; }).then(function (body) {
+        if (!res.ok) throw new Error('Bad response ' + res.status);
+        // mail_sent = delivered. mail_failed = stored by Flamingo but the
+        // notification bounced; the enquiry is NOT lost, so treat it as sent
+        // for the visitor and let the ops side deal with the mail transport.
+        var st = body.status || '';
+        if (st === 'validation_failed' || st === 'spam' || st === 'acceptance_missing') {
+          throw new Error(body.message || 'Please check the form and try again.');
+        }
+        return true;
+      });
     });
   }
 
