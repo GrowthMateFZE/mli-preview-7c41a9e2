@@ -656,6 +656,13 @@ select.field {
 .featured-product__buy { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
 .price { font: 600 30px var(--serif); }
 .price--sm { font-size: 20px; }
+/* For items sold elsewhere at a price we do not control (Amazon). Reads as a
+   note, not as a price, so we never imply a figure we cannot honour. */
+.price--note {
+  font: 500 15px/1.3 var(--sans);
+  color: var(--ink-55);
+  letter-spacing: .01em;
+}
 
 .product-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
 .product {

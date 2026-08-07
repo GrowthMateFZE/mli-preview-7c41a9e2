@@ -656,6 +656,13 @@ select.field {
 .featured-product__buy { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
 .price { font: 600 30px var(--serif); }
 .price--sm { font-size: 20px; }
+/* For items sold elsewhere at a price we do not control (Amazon). Reads as a
+   note, not as a price, so we never imply a figure we cannot honour. */
+.price--note {
+  font: 500 15px/1.3 var(--sans);
+  color: var(--ink-55);
+  letter-spacing: .01em;
+}
 
 .product-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
 .product {
@@ -1039,7 +1046,7 @@ select.field {
         <h2 class="h2">Relationship Medicine™<br>Guided Journal</h2>
         <p class="body" style="max-width:480px;margin-bottom:24px">Three months of guided reflection to transform your most important relationships — the same journal at the heart of the guided course. Good relationships = good medicine.</p>
         <div class="featured-product__buy">
-          <span class="price">$34</span>
+          <span class="price price--note">Buy on Amazon</span>
           <a class="btn btn--dark" href="https://www.amazon.com/Relationship-Medicine-transform-relationships-Intelligence/dp/B0BRYZQWYP/" target="_blank" rel="noopener">Buy the journal</a>
           <a class="link-arrow" href="/work-with-me/">Or take the full course →</a>
         </div>
@@ -1062,7 +1069,7 @@ select.field {
           <h3 class="h3">The Twelve Ways of Love</h3>
           <p class="product__meta">Dr. Denny Thompson · Paperback</p>
           <div class="product__foot">
-            <span class="price price--sm">$18</span>
+            <span class="price price--sm">$12.99</span>
             <a class="btn btn--outline" href="https://square.link/u/3T2YQ6oq" target="_blank" rel="noopener" aria-label="Buy The Twelve Ways of Love">Buy</a>
           </div>
         </div>
@@ -1076,7 +1083,7 @@ select.field {
           <h3 class="h3">The Yoga of Relationships</h3>
           <p class="product__meta">Dr. Denny Thompson · Paperback</p>
           <div class="product__foot">
-            <span class="price price--sm">$16</span>
+            <span class="price price--sm">$12.99</span>
             <a class="btn btn--outline" href="https://square.link/u/blsVSKQc" target="_blank" rel="noopener" aria-label="Buy The Yoga of Relationships">Buy</a>
           </div>
         </div>
@@ -1090,7 +1097,7 @@ select.field {
           <h3 class="h3">The Love Book &amp; Cards</h3>
           <p class="product__meta">By Shamanie · Book + card set</p>
           <div class="product__foot">
-            <span class="price price--sm">$28</span>
+            <span class="price price--sm">$49</span>
             <a class="btn btn--outline" href="https://checkout.square.site/merchant/ML5VP3YKA3KSA/checkout/KVLZA3ZOENVCLQ7WEBRTALIC" target="_blank" rel="noopener" aria-label="Buy The Love Book &amp; Cards">Buy</a>
           </div>
         </div>
