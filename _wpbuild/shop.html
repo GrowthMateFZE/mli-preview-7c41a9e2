@@ -788,6 +788,18 @@ select.field {
 .quiz-result { max-width: 860px; margin: 0 auto; }
 .quiz-result__head { text-align: center; margin-bottom: 44px; }
 .result-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 26px; }
+/* Only one Way is revealed free — the other three come from the paid Report —
+   so the single card centres rather than stretching across the old two-up grid. */
+.result-cards--single { grid-template-columns: minmax(0, 460px); justify-content: center; }
+
+/* ---- birth-date step (between the last question and the reveal) ---- */
+.quiz-birth__inner { max-width: 520px; margin: 0 auto; text-align: center; }
+.quiz-birth__inner .body { margin: 14px 0 26px; }
+.quiz-birth__inner .input {
+  width: 100%; max-width: 320px; margin: 0 auto; display: block;
+  text-align: center; font: 500 17px var(--sans);
+}
+.quiz-birth__note { margin-top: 18px; font: 400 13px var(--sans); color: var(--ink-55); }
 .result-card {
   background: var(--cream-soft);
   border: 1px solid var(--line-soft);
