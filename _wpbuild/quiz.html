@@ -796,8 +796,17 @@ select.field {
 .quiz-birth__inner { max-width: 520px; margin: 0 auto; text-align: center; }
 .quiz-birth__inner .body { margin: 14px 0 26px; }
 .quiz-birth__inner .input {
-  width: 100%; max-width: 320px; margin: 0 auto; display: block;
-  text-align: center; font: 500 17px var(--sans);
+  width: 100%; max-width: 340px; margin: 0 auto; display: block;
+  text-align: center; font: 500 17px var(--sans);   /* 17px: below 16 iOS zooms on focus */
+}
+.birth-field { margin-bottom: 20px; }
+.birth-field label {
+  display: block; margin-bottom: 7px;
+  font: 500 14px var(--sans); color: var(--ink-deep); letter-spacing: .01em;
+}
+.birth-field__help {
+  margin: 7px auto 0; max-width: 340px;
+  font: 400 12.5px/1.45 var(--sans); color: var(--ink-55);
 }
 .quiz-birth__note { margin-top: 18px; font: 400 13px var(--sans); color: var(--ink-55); }
 .result-card {
@@ -1058,19 +1067,39 @@ select.field {
       <section class="quiz-screen quiz-birth" data-screen="birth" aria-label="Your birth date" hidden>
         <div class="quiz-birth__inner">
           <p class="eyebrow">Last step</p>
-          <h2 class="h2">When were you born?</h2>
-          <p class="body">Your Love Intelligence Code is calculated from your birth date — it isn’t
-            something a quiz can work out. Add yours and we’ll reveal one of your Ways now.</p>
+          <h2 class="h2">Where and when were you born?</h2>
+          <p class="body">Your Love Intelligence Code is calculated from your birth date, time and
+            place — it isn’t something a quiz can work out. Add yours and we’ll reveal one of your
+            Ways now.</p>
 
           <form data-birth-form novalidate>
-            <label class="visually-hidden" for="birth-date">Your date of birth</label>
-            <input class="input" id="birth-date" name="birth_date" type="date" required
-                   autocomplete="bday" max="2026-12-31">
+            <div class="birth-field">
+              <label for="birth-date">Date of birth</label>
+              <input class="input" id="birth-date" name="birth_date" type="date" required
+                     autocomplete="bday" max="2026-12-31">
+            </div>
+
+            <div class="birth-field">
+              <label for="birth-time">Time of birth</label>
+              <input class="input" id="birth-time" name="birth_time" type="time">
+              <p class="birth-field__help">Don’t know the exact time? Leave it blank — your Code
+                still works, it’s just less precise.</p>
+            </div>
+
+            <div class="birth-field">
+              <label for="birth-place">Place of birth</label>
+              <input class="input" id="birth-place" name="birth_place" type="text" required
+                     placeholder="City, state or country" autocomplete="off">
+              <p class="birth-field__help">If your exact birthplace isn’t listed, choose the
+                nearest city.</p>
+            </div>
+
             <p class="form-error" role="alert" hidden></p>
-            <button class="btn btn--primary" type="submit" style="margin-top:16px">Reveal my Way</button>
+            <button class="btn btn--primary" type="submit" style="margin-top:8px">Reveal my Way</button>
           </form>
 
-          <p class="quiz-birth__note">We use it only to calculate your Code. It is never sold or shared.</p>
+          <p class="quiz-birth__note">We use these only to calculate your Code. They are never sold
+            or shared.</p>
         </div>
       </section>
 
@@ -1623,32 +1652,43 @@ select.field {
     if (pIcon) { pIcon.src = BASE + primary.icon; pIcon.alt = primary.name; }
   }
 
-  /* Birth date gate. Sits between the last question and the reveal, because the
-     Code is derived from the birth date — asking for it after the reveal would
-     imply the quiz had already worked it out. */
+  /* Birth-data gate. Sits between the last question and the reveal, because the
+     Code is derived from birth date, time and place (per Vedic tradition) — not
+     from the answers. Asking after the reveal would imply the quiz had already
+     worked it out.
+
+     Time is optional on purpose: plenty of people do not know theirs, and making
+     it mandatory would lose the lead entirely. Date and place are required
+     because without them there is nothing to calculate. */
   function initBirthForm() {
     var form = $('[data-birth-form]', root);
     if (!form) return;
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
-      var input = $('input[type="date"]', form);
-      var err   = $('.form-error', form);
-      var value = (input && input.value || '').trim();
+      var dateEl  = $('#birth-date', form);
+      var timeEl  = $('#birth-time', form);
+      var placeEl = $('#birth-place', form);
+      var err     = $('.form-error', form);
 
-      if (!value) {
-        if (err) { err.textContent = 'Please add your date of birth to see your Way.'; err.hidden = false; }
-        if (input) input.focus();
-        return;
-      }
-      if (new Date(value) > new Date()) {
-        if (err) { err.textContent = 'That date is in the future — please check it.'; err.hidden = false; }
-        if (input) input.focus();
-        return;
-      }
+      var date  = (dateEl && dateEl.value || '').trim();
+      var time  = (timeEl && timeEl.value || '').trim();
+      var place = (placeEl && placeEl.value || '').trim();
+
+      var fail = function (msg, el) {
+        if (err) { err.textContent = msg; err.hidden = false; }
+        if (el) el.focus();
+      };
+
+      if (!date) return fail('Please add your date of birth to see your Way.', dateEl);
+      if (new Date(date) > new Date()) return fail('That date is in the future — please check it.', dateEl);
+      if (!place) return fail('Please add your place of birth — your Code is calculated from it.', placeEl);
+
       if (err) err.hidden = true;
 
-      state.birthDate = value;
+      state.birthDate  = date;
+      state.birthTime  = time;
+      state.birthPlace = place;
       renderResult();
       show('result');
     });
@@ -1673,11 +1713,17 @@ select.field {
       if (err) err.hidden = true;
 
       var ranked = result();
+      var birthLines =
+        'Birth date:  ' + (state.birthDate || '(not given)') +
+        '\nBirth time:  ' + (state.birthTime || '(not known)') +
+        '\nBirth place: ' + (state.birthPlace || '(not given)');
       var payload = {
         email: email,
         form: 'love-code-quiz',
         subject: 'Love Intelligence Report request',
         birth_date: state.birthDate || '',
+        birth_time: state.birthTime || '',
+        birth_place: state.birthPlace || '',
         revealed_way: ranked[0].name,
         answers: state.picks.join(', ')
       };
@@ -1693,7 +1739,7 @@ select.field {
 
       if (!FORM_ENDPOINT) {
         var body = 'Love Intelligence Report request\n\nEmail: ' + email +
-                   '\nBirth date: ' + (state.birthDate || '(not given)') +
+                   '\n' + birthLines +
                    '\nWay revealed by the quiz: ' + ranked[0].name;
         window.location.href = 'mailto:' + CONTACT_EMAIL +
           '?subject=' + encodeURIComponent('Love Intelligence Report request') +
@@ -1716,7 +1762,7 @@ select.field {
       fd.append('your-email', email);
       fd.append('your-subject', 'Love Intelligence Report request');
       fd.append('your-message',
-        'Birth date: ' + (state.birthDate || '(not given)') +
+        birthLines +
         '\nWay revealed by the quiz: ' + ranked[0].name +
         '\n\nQuiz answers: ' + state.picks.join(', '));
 
@@ -1769,7 +1815,7 @@ select.field {
 
     var retake = $('[data-quiz-retake]', root);
     if (retake) retake.addEventListener('click', function () {
-      state = { screen: 'intro', qIndex: 0, picks: [], email: '', birthDate: '', sent: false };
+      state = { screen: 'intro', qIndex: 0, picks: [], email: '', birthDate: '', birthTime: '', birthPlace: '', sent: false };
       var form = $('[data-guide-form]', root);
       var success = $('[data-guide-success]', root);
       var birth = $('[data-birth-form]', root);

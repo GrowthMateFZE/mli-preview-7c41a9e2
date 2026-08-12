@@ -796,8 +796,17 @@ select.field {
 .quiz-birth__inner { max-width: 520px; margin: 0 auto; text-align: center; }
 .quiz-birth__inner .body { margin: 14px 0 26px; }
 .quiz-birth__inner .input {
-  width: 100%; max-width: 320px; margin: 0 auto; display: block;
-  text-align: center; font: 500 17px var(--sans);
+  width: 100%; max-width: 340px; margin: 0 auto; display: block;
+  text-align: center; font: 500 17px var(--sans);   /* 17px: below 16 iOS zooms on focus */
+}
+.birth-field { margin-bottom: 20px; }
+.birth-field label {
+  display: block; margin-bottom: 7px;
+  font: 500 14px var(--sans); color: var(--ink-deep); letter-spacing: .01em;
+}
+.birth-field__help {
+  margin: 7px auto 0; max-width: 340px;
+  font: 400 12.5px/1.45 var(--sans); color: var(--ink-55);
 }
 .quiz-birth__note { margin-top: 18px; font: 400 13px var(--sans); color: var(--ink-55); }
 .result-card {
