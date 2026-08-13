@@ -9,8 +9,20 @@ window.MLI_CONFIG = {
 };
 </script>
 
-<!-- Feedbucket: client review widget -->
-<script type="text/javascript">(function(k){var s=document.createElement('script');s.defer=true;s.src="https://cdn.feedbucket.app/assets/feedbucket.js";s.dataset.feedbucket=k;document.head.appendChild(s);})('YZJpnQYntVd17FYyDT8j')</script>
+<!-- Feedbucket: client review widget.
+     GATED so it never shows to the public on the live domain: it loads on the
+     staging hostname always, and on any hostname only for a visitor who arrived
+     via the client's ?feedbucketKey= review link (remembered per-tab). This is
+     the Driip IV rule (widget must not appear publicly) without breaking
+     Shamanie's existing review link after cutover. -->
+<script type="text/javascript">(function(k){try{
+  var q=new URLSearchParams(location.search).get('feedbucketKey');
+  if(q)sessionStorage.setItem('mliFbk','1');
+  var reviewer=q||sessionStorage.getItem('mliFbk');
+  var staging=/\.cloudwaysapps\.com$/.test(location.hostname);
+  if(!staging&&!reviewer)return;
+  var s=document.createElement('script');s.defer=true;s.src="https://cdn.feedbucket.app/assets/feedbucket.js";s.dataset.feedbucket=k;document.head.appendChild(s);
+}catch(e){}})('YZJpnQYntVd17FYyDT8j')</script>
 <!-- carry ?feedbucketKey= across internal links so the reviewer keeps the widget -->
 <script>(function(){try{var k=new URLSearchParams(location.search).get('feedbucketKey');if(!k)return;document.addEventListener('click',function(e){var a=e.target&&e.target.closest?e.target.closest('a'):null;if(!a)return;try{var u=new URL(a.href,location.origin);if(u.origin!==location.origin)return;if(!u.searchParams.get('feedbucketKey')){u.searchParams.set('feedbucketKey',k);a.href=u.toString();}}catch(err){}},true);}catch(e){}})();</script>
 
