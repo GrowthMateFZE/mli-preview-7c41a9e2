@@ -1,4 +1,4 @@
-/* Relationship Medicine™ — site behaviour
+/* Relationship Medicine® — site behaviour
    Vanilla JS, no dependencies. Progressive enhancement: every page is
    readable and navigable with JS disabled. */
 (function () {
@@ -139,6 +139,32 @@
            '&body=' + encodeURIComponent(lines.join('\n'));
   }
 
+  /* Contact Form 7 receives the submission. It expects multipart form-data with
+     its own field names, so the design's fields are mapped onto them here rather
+     than renaming inputs in the markup (the markup is the approved design).
+     CF7 also answers 200 with a JSON status even when it rejects the input, so
+     the status field is what actually decides success — not the HTTP code. */
+  function toCF7(data, subject) {
+    var fd = new FormData();
+    // CF7 rejects a submission outright ("no valid unit tag") without these
+    // control fields, even though they carry no user data.
+    var id = String(CONFIG.formId || '');
+    fd.append('_wpcf7', id);
+    fd.append('_wpcf7_version', '6.0');
+    fd.append('_wpcf7_locale', 'en_US');
+    fd.append('_wpcf7_unit_tag', 'wpcf7-f' + id + '-o1');
+    fd.append('_wpcf7_container_post', '0');
+    var name = data.name || data.first_name || 'Website visitor';
+    var msg  = data.message || '';
+    if (data.who) msg = 'Who this is for: ' + data.who + (msg ? '\n\n' + msg : '');
+    if (!msg) msg = '(no message — ' + (subject || 'submission') + ')';
+    fd.append('your-name', name);
+    fd.append('your-email', data.email || '');
+    fd.append('your-subject', subject || 'Website enquiry');
+    fd.append('your-message', msg);
+    return fd;
+  }
+
   /* Sends a payload. Resolves true on delivery, false if it must be handed
      off to the visitor's mail client. */
   function deliver(data, subject) {
@@ -149,11 +175,20 @@
     }
     return fetch(FORM_ENDPOINT, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify(data)
+      headers: { 'Accept': 'application/json' },
+      body: toCF7(data, subject)
     }).then(function (res) {
-      if (!res.ok) throw new Error('Bad response ' + res.status);
-      return true;
+      return res.json().catch(function () { return {}; }).then(function (body) {
+        if (!res.ok) throw new Error('Bad response ' + res.status);
+        // mail_sent = delivered. mail_failed = stored by Flamingo but the
+        // notification bounced; the enquiry is NOT lost, so treat it as sent
+        // for the visitor and let the ops side deal with the mail transport.
+        var st = body.status || '';
+        if (st === 'validation_failed' || st === 'spam' || st === 'acceptance_missing') {
+          throw new Error(body.message || 'Please check the form and try again.');
+        }
+        return true;
+      });
     });
   }
 

@@ -7,13 +7,13 @@
 <!-- PRE-LAUNCH STAGING ONLY — remove this robots line at go-live -->
 <meta name="robots" content="noindex, nofollow">
 <title>What’s your Love Intelligence Code? — Free 3-minute quiz</title>
-<meta name="description" content="Nine gentle questions reveal the two Ways of Love your heart speaks most fluently. Free, instant, no account needed.">
+<meta name="description" content="Nine gentle questions reveal one of the Ways of Love your heart speaks most fluently. Free, instant, no account needed.">
 <link rel="canonical" href="https://myloveintelligence.com/quiz.html">
 
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Relationship Medicine™">
+<meta property="og:site_name" content="Relationship Medicine®">
 <meta property="og:title" content="What’s your Love Intelligence Code?">
-<meta property="og:description" content="Nine gentle questions. Three minutes. Discover the two Ways of Love your heart speaks most fluently.">
+<meta property="og:description" content="Nine gentle questions. Three minutes. Discover one of the Ways of Love your heart speaks most fluently.">
 <meta property="og:image" content="https://myloveintelligence.com/assets/uploads/whats-yours.webp">
 <meta name="twitter:card" content="summary_large_image">
 
@@ -45,7 +45,7 @@
         <img src="assets/uploads/S-Thompson_Favicon_Color.png" alt="" width="54" height="54">
         <p class="eyebrow">The Twelve Ways of Love™</p>
         <h1 class="h1 h1--sm">What’s your <em class="accent">Love Intelligence</em> Code?</h1>
-        <p class="lede">Nine gentle questions. There are no right answers — only your answers. At the end, you’ll see the two Ways of Love your heart speaks most fluently.</p>
+        <p class="lede">Nine gentle questions. There are no right answers — only your answers. At the end, you’ll see one of the four Ways of Love your heart speaks most fluently — and how to find the rest.</p>
 
         <div class="quiz-chips">
           <span class="chip">9 questions</span>
@@ -71,56 +71,89 @@
         <div data-q-options></div>
       </section>
 
+      <!-- ------------------------------------------------- birth date -->
+      <section class="quiz-screen quiz-birth" data-screen="birth" aria-label="Your birth date" hidden>
+        <div class="quiz-birth__inner">
+          <p class="eyebrow">Last step</p>
+          <h2 class="h2">Where and when were you born?</h2>
+          <p class="body">Your Love Intelligence Code is calculated from your birth date, time and
+            place — it isn’t something a quiz can work out. Add yours and we’ll reveal one of your
+            Ways now.</p>
+
+          <form data-birth-form novalidate>
+            <div class="birth-field">
+              <label for="birth-date">Date of birth</label>
+              <input class="input" id="birth-date" name="birth_date" type="date" required
+                     autocomplete="bday" max="2026-12-31">
+            </div>
+
+            <div class="birth-field">
+              <label for="birth-time">Time of birth</label>
+              <input class="input" id="birth-time" name="birth_time" type="time">
+              <p class="birth-field__help">Don’t know the exact time? Leave it blank — your Code
+                still works, it’s just less precise.</p>
+            </div>
+
+            <div class="birth-field">
+              <label for="birth-place">Place of birth</label>
+              <input class="input" id="birth-place" name="birth_place" type="text" required
+                     placeholder="City, state or country" autocomplete="off">
+              <p class="birth-field__help">If your exact birthplace isn’t listed, choose the
+                nearest city.</p>
+            </div>
+
+            <p class="form-error" role="alert" hidden></p>
+            <button class="btn btn--primary" type="submit" style="margin-top:8px">Reveal my Way</button>
+          </form>
+
+          <p class="quiz-birth__note">We use these only to calculate your Code. They are never sold
+            or shared.</p>
+        </div>
+      </section>
+
       <!-- ----------------------------------------------------- result -->
       <section class="quiz-screen quiz-result" data-screen="result" aria-label="Your result" hidden>
         <div class="quiz-result__head">
-          <p class="eyebrow">Your Love Intelligence Code</p>
-          <h2 class="h2 h2--lg">You speak <em class="accent" data-primary-name></em><br>&amp; <span data-secondary-name></span></h2>
+          <p class="eyebrow">One of your Ways</p>
+          <h2 class="h2 h2--lg">You speak <em class="accent" data-primary-name></em></h2>
         </div>
 
-        <div class="result-cards">
+        <div class="result-cards result-cards--single">
           <article class="result-card">
             <span class="result-card__icon result-card__icon--primary">
               <img data-primary-icon src="assets/uploads/WORDS-OF-PRAISE-ICON.png" alt="" width="42" height="42">
             </span>
-            <p class="result-card__label">PRIMARY WAY</p>
+            <p class="result-card__label">ONE OF YOUR FOUR WAYS</p>
             <h3 data-primary-name></h3>
             <p class="body" data-primary-desc></p>
-          </article>
-
-          <article class="result-card">
-            <span class="result-card__icon result-card__icon--secondary">
-              <img data-secondary-icon src="assets/uploads/LISTENING-ICON-Vector-Color.png" alt="" width="42" height="42">
-            </span>
-            <p class="result-card__label result-card__label--green">SUPPORTING WAY</p>
-            <h3 data-secondary-name></h3>
-            <p class="body" data-secondary-desc></p>
           </article>
         </div>
 
         <div class="prescription">
           <p class="prescription__label">THIS WEEK’S PRESCRIPTION</p>
           <div class="prescription__list">
-            <p><strong>Tell someone.</strong> Share your two Ways with the person closest to you — today.</p>
+            <p><strong>Tell someone.</strong> Share this Way with the person closest to you — today.</p>
             <p><strong>Watch for theirs.</strong> Notice which Ways they reach for this week, without saying anything yet.</p>
-            <p><strong>Go deeper.</strong> Your full Code guide ranks all twelve Ways and shows you what to do next.</p>
+            <p><strong>Find the other three.</strong> Everyone has four Ways. Yours are set by your birth date, and the full Report reveals all of them.</p>
           </div>
         </div>
 
         <div class="guide-offer">
           <div>
             <form data-guide-form novalidate>
-              <h3>Get your full Code guide — free</h3>
+              <h3>Get your full Love Intelligence Report</h3>
+              <p class="body" style="margin-top:8px">All four of your Ways, calculated from the birth date
+                you just gave us — plus what each one means for the people you love.</p>
               <div class="field-row" style="margin-top:14px">
                 <label class="visually-hidden" for="guide-email">Your email address</label>
                 <input class="input" id="guide-email" name="email" type="email" placeholder="Your email address" autocomplete="email" required>
-                <button class="btn btn--primary btn--sm" type="submit">Send it</button>
+                <button class="btn btn--primary btn--sm" type="submit">Send me the details</button>
               </div>
               <p class="form-error" role="alert" hidden></p>
             </form>
-            <p class="form-success" data-guide-success hidden>Sent with love — check your inbox.</p>
+            <p class="form-success" data-guide-success hidden>Thank you — Dr. Shamanie will be in touch with your Report.</p>
           </div>
-          <img src="assets/uploads/join-revolution.webp" alt="Your Love Intelligence Code guide" width="150" height="190" loading="lazy">
+          <img src="assets/uploads/join-revolution.webp" alt="The Love Intelligence Report" width="150" height="190" loading="lazy">
         </div>
 
         <div class="quiz-result__actions">

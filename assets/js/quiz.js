@@ -108,13 +108,19 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
+  /* Ranked Ways, strongest first.
+
+     Only the top one is ever shown. Everyone has FOUR Ways, and which four is
+     set by their birth date — not by quiz answers — so the quiz can only ever
+     offer a taste. The other three come from the paid Report, which is why the
+     birth date is collected before the reveal. */
   function result() {
     var scores = {};
     state.picks.forEach(function (k) { scores[k] = (scores[k] || 0) + 1; });
     var ranked = Object.keys(WAYS)
       .map(function (k) { return [k, scores[k] || 0]; })
       .sort(function (a, b) { return b[1] - a[1]; });
-    return [WAYS[ranked[0][0]], WAYS[ranked[1][0]]];
+    return ranked.map(function (r) { return WAYS[r[0]]; });
   }
 
   function renderQuestion() {
@@ -140,8 +146,7 @@
       btn.addEventListener('click', function () {
         state.picks = state.picks.slice(0, state.qIndex).concat([pair[1]]);
         if (state.qIndex + 1 >= QUESTIONS.length) {
-          renderResult();
-          show('result');
+          show('birth');           // birth date first, then the reveal
         } else {
           state.qIndex += 1;
           renderQuestion();
@@ -152,18 +157,56 @@
   }
 
   function renderResult() {
-    var pair = result();
-    var primary = pair[0], secondary = pair[1];
+    var primary = result()[0];
 
     $$('[data-primary-name]', root).forEach(function (el) { el.textContent = primary.name; });
-    $$('[data-secondary-name]', root).forEach(function (el) { el.textContent = secondary.name; });
-    $('[data-primary-desc]', root).textContent   = primary.desc;
-    $('[data-secondary-desc]', root).textContent = secondary.desc;
+    var desc = $('[data-primary-desc]', root);
+    if (desc) desc.textContent = primary.desc;
 
     var pIcon = $('[data-primary-icon]', root);
-    var sIcon = $('[data-secondary-icon]', root);
-    pIcon.src = BASE + primary.icon;   pIcon.alt = primary.name;
-    sIcon.src = BASE + secondary.icon; sIcon.alt = secondary.name;
+    if (pIcon) { pIcon.src = BASE + primary.icon; pIcon.alt = primary.name; }
+  }
+
+  /* Birth-data gate. Sits between the last question and the reveal, because the
+     Code is derived from birth date, time and place (per Vedic tradition) — not
+     from the answers. Asking after the reveal would imply the quiz had already
+     worked it out.
+
+     Time is optional on purpose: plenty of people do not know theirs, and making
+     it mandatory would lose the lead entirely. Date and place are required
+     because without them there is nothing to calculate. */
+  function initBirthForm() {
+    var form = $('[data-birth-form]', root);
+    if (!form) return;
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var dateEl  = $('#birth-date', form);
+      var timeEl  = $('#birth-time', form);
+      var placeEl = $('#birth-place', form);
+      var err     = $('.form-error', form);
+
+      var date  = (dateEl && dateEl.value || '').trim();
+      var time  = (timeEl && timeEl.value || '').trim();
+      var place = (placeEl && placeEl.value || '').trim();
+
+      var fail = function (msg, el) {
+        if (err) { err.textContent = msg; err.hidden = false; }
+        if (el) el.focus();
+      };
+
+      if (!date) return fail('Please add your date of birth to see your Way.', dateEl);
+      if (new Date(date) > new Date()) return fail('That date is in the future — please check it.', dateEl);
+      if (!place) return fail('Please add your place of birth — your Code is calculated from it.', placeEl);
+
+      if (err) err.hidden = true;
+
+      state.birthDate  = date;
+      state.birthTime  = time;
+      state.birthPlace = place;
+      renderResult();
+      show('result');
+    });
   }
 
   function initGuideForm() {
@@ -184,12 +227,19 @@
       }
       if (err) err.hidden = true;
 
-      var pair = result();
+      var ranked = result();
+      var birthLines =
+        'Birth date:  ' + (state.birthDate || '(not given)') +
+        '\nBirth time:  ' + (state.birthTime || '(not known)') +
+        '\nBirth place: ' + (state.birthPlace || '(not given)');
       var payload = {
         email: email,
         form: 'love-code-quiz',
-        primary_way: pair[0].name,
-        secondary_way: pair[1].name,
+        subject: 'Love Intelligence Report request',
+        birth_date: state.birthDate || '',
+        birth_time: state.birthTime || '',
+        birth_place: state.birthPlace || '',
+        revealed_way: ranked[0].name,
         answers: state.picks.join(', ')
       };
 
@@ -203,23 +253,45 @@
       };
 
       if (!FORM_ENDPOINT) {
-        var body = 'My Love Intelligence Code\n\nPrimary Way: ' + pair[0].name +
-                   '\nSupporting Way: ' + pair[1].name + '\nEmail: ' + email;
+        var body = 'Love Intelligence Report request\n\nEmail: ' + email +
+                   '\n' + birthLines +
+                   '\nWay revealed by the quiz: ' + ranked[0].name;
         window.location.href = 'mailto:' + CONTACT_EMAIL +
-          '?subject=' + encodeURIComponent('Send my Love Intelligence Code guide') +
+          '?subject=' + encodeURIComponent('Love Intelligence Report request') +
           '&body=' + encodeURIComponent(body);
         done();
         if (btn) { btn.disabled = false; btn.textContent = label; }
         return;
       }
 
+      // Same Contact Form 7 endpoint the other forms use, so a quiz lead lands
+      // in Flamingo alongside everything else rather than in its own silo.
+      var fd = new FormData();
+      var id = String(CONFIG.formId || '');
+      fd.append('_wpcf7', id);
+      fd.append('_wpcf7_version', '6.0');
+      fd.append('_wpcf7_locale', 'en_US');
+      fd.append('_wpcf7_unit_tag', 'wpcf7-f' + id + '-o1');
+      fd.append('_wpcf7_container_post', '0');
+      fd.append('your-name', 'Quiz — ' + ranked[0].name);
+      fd.append('your-email', email);
+      fd.append('your-subject', 'Love Intelligence Report request');
+      fd.append('your-message',
+        birthLines +
+        '\nWay revealed by the quiz: ' + ranked[0].name +
+        '\n\nQuiz answers: ' + state.picks.join(', '));
+
       fetch(FORM_ENDPOINT, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify(payload)
+        headers: { 'Accept': 'application/json' },
+        body: fd
       }).then(function (res) {
-        if (!res.ok) throw new Error('bad response');
-        done();
+        return res.json().catch(function () { return {}; }).then(function (b) {
+          if (!res.ok) throw new Error('bad response');
+          var st = b.status || '';
+          if (st === 'validation_failed' || st === 'spam') throw new Error(b.message || 'rejected');
+          done();
+        });
       }).catch(function () {
         if (err) {
           err.textContent = 'Something went wrong. Please email ' + CONTACT_EMAIL + '.';
@@ -238,6 +310,7 @@
     screens = {
       intro:    $('[data-screen="intro"]', root),
       question: $('[data-screen="question"]', root),
+      birth:    $('[data-screen="birth"]', root),
       result:   $('[data-screen="result"]', root)
     };
 
@@ -257,14 +330,17 @@
 
     var retake = $('[data-quiz-retake]', root);
     if (retake) retake.addEventListener('click', function () {
-      state = { screen: 'intro', qIndex: 0, picks: [], email: '', sent: false };
+      state = { screen: 'intro', qIndex: 0, picks: [], email: '', birthDate: '', birthTime: '', birthPlace: '', sent: false };
       var form = $('[data-guide-form]', root);
       var success = $('[data-guide-success]', root);
+      var birth = $('[data-birth-form]', root);
       if (form) { form.hidden = false; form.reset(); }
+      if (birth) birth.reset();
       if (success) success.hidden = true;
       show('intro');
     });
 
+    initBirthForm();
     initGuideForm();
     show('intro');
   }
