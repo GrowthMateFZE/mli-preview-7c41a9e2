@@ -544,6 +544,13 @@ body.nav-open { overflow: hidden; }
   font: 600 22px var(--serif); font-style: italic; color: var(--green);
   display: flex; align-items: center; gap: 10px;
 }
+
+/* Post-email success state of the Report offer: text + Square checkout button.
+   Block layout (not the celebratory flex row above), and an explicit [hidden]
+   guard so the display rule can never fight the hidden attribute. */
+.guide-success p { font: 400 15.5px/1.6 var(--sans); color: var(--ink-72); }
+.guide-success p strong { color: var(--green); }
+.guide-success[hidden] { display: none; }
 [hidden] { display: none !important; }
 .form-error { font: 400 13px var(--sans); color: #A3341F; margin-top: 10px; }
 
