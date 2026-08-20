@@ -212,6 +212,25 @@ button { font-family: inherit; }
 .body { font: 400 clamp(15px, 1.1vw, 16.5px)/1.7 var(--sans); color: var(--ink-72); margin: 0; }
 .fineprint { font: 400 13.5px/1.6 var(--sans); color: var(--ink-55); }
 
+/* Numbered offer list — the homepage "three ways to practise" block.
+   Counter-based so the numerals pick up the brand gold rather than the
+   browser's default marker colour. */
+.offer-list {
+  list-style: none; counter-reset: offer;
+  margin: 0 0 30px; padding: 0;
+}
+.offer-list li {
+  counter-increment: offer;
+  position: relative; padding-left: 34px; margin-bottom: 13px;
+  font: 400 15.5px/1.6 var(--sans); color: var(--ink-72);
+}
+.offer-list li::before {
+  content: counter(offer) ".";
+  position: absolute; left: 0; top: 0;
+  font: 600 16px var(--serif); color: var(--gold-deep);
+}
+.offer-list strong { color: var(--ink); font-weight: 600; }
+
 .on-dark .h1, .on-dark .h2, .on-dark .h3, .band--dark .h1, .band--dark .h2, .band--dark .h3 { color: var(--on-dark); }
 .band--dark .body, .band--dark .lede { color: rgba(245, 238, 224, .72); }
 
@@ -1126,7 +1145,7 @@ select.field {
       <ol class="steps" style="list-style:none;padding:0;margin:0 0 38px">
         <li class="step">
           <span class="step__num" aria-hidden="true">1</span>
-          <span class="step__txt"><strong>Discover your Code.</strong> The two or three Ways of Love your heart speaks natively.</span>
+          <span class="step__txt"><strong>Discover your Code.</strong> The four Ways of Love your heart speaks natively.</span>
         </li>
         <li class="step">
           <span class="step__num" aria-hidden="true">2</span>
@@ -1235,13 +1254,18 @@ select.field {
       <div>
         <p class="eyebrow">Books &amp; tools</p>
         <h2 class="h2">Wisdom you can hold</h2>
-        <p class="body" style="margin-bottom:30px">The guided journal, Dr. Denny’s original books, and The Love Book card set — tools for practicing love on paper, at your own pace.</p>
+        <p class="body" style="margin-bottom:22px">Three ways to practise, at your own pace:</p>
+        <ol class="offer-list">
+          <li><strong>Relationship Medicine® App</strong> — transform your relationships in less than 10 minutes a day</li>
+          <li><strong>Relationship Medicine® Guided Journal</strong> — on Amazon</li>
+          <li><strong>Love Intelligence Code Report</strong> — all four of your Love Languages</li>
+        </ol>
         <a class="btn btn--dark" href="/shop/">Visit the shop</a>
       </div>
       <div class="books">
-        <img class="books__a" src="https://wordpress-1654226-6583830.cloudwaysapps.com/wp-content/uploads/2026/07/the-twelve-ways-of-love.webp" alt="The Twelve Ways of Love" width="180" height="270" loading="lazy">
+        <img class="books__a" src="https://wordpress-1654226-6583830.cloudwaysapps.com/wp-content/uploads/2026/07/S-Thompson_Favicon_Color.png" alt="Relationship Medicine app" width="180" height="270" loading="lazy" style="object-fit:contain">
         <img class="books__b" src="https://wordpress-1654226-6583830.cloudwaysapps.com/wp-content/uploads/2026/07/relationship-medicine-journal-cover.webp" alt="Relationship Medicine Guided Journal" width="220" height="285" loading="lazy">
-        <img class="books__c" src="https://wordpress-1654226-6583830.cloudwaysapps.com/wp-content/uploads/2026/07/the-yoga-of-relationships.webp" alt="The Yoga of Relationships" width="180" height="270" loading="lazy">
+        <img class="books__c" src="https://wordpress-1654226-6583830.cloudwaysapps.com/wp-content/uploads/2026/07/join-revolution.webp" alt="Love Intelligence Code Report" width="180" height="270" loading="lazy">
       </div>
     </div>
   </section>

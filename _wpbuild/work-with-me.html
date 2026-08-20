@@ -212,6 +212,25 @@ button { font-family: inherit; }
 .body { font: 400 clamp(15px, 1.1vw, 16.5px)/1.7 var(--sans); color: var(--ink-72); margin: 0; }
 .fineprint { font: 400 13.5px/1.6 var(--sans); color: var(--ink-55); }
 
+/* Numbered offer list — the homepage "three ways to practise" block.
+   Counter-based so the numerals pick up the brand gold rather than the
+   browser's default marker colour. */
+.offer-list {
+  list-style: none; counter-reset: offer;
+  margin: 0 0 30px; padding: 0;
+}
+.offer-list li {
+  counter-increment: offer;
+  position: relative; padding-left: 34px; margin-bottom: 13px;
+  font: 400 15.5px/1.6 var(--sans); color: var(--ink-72);
+}
+.offer-list li::before {
+  content: counter(offer) ".";
+  position: absolute; left: 0; top: 0;
+  font: 600 16px var(--serif); color: var(--gold-deep);
+}
+.offer-list strong { color: var(--ink); font-weight: 600; }
+
 .on-dark .h1, .on-dark .h2, .on-dark .h3, .band--dark .h1, .band--dark .h2, .band--dark .h3 { color: var(--on-dark); }
 .band--dark .body, .band--dark .lede { color: rgba(245, 238, 224, .72); }
 
@@ -1219,14 +1238,14 @@ select.field {
         <button class="faq__q" type="button" aria-expanded="false" aria-controls="faq-1">
           <span>Is this therapy?</span><span class="faq__mark" aria-hidden="true">+</span>
         </button>
-        <p class="faq__a" id="faq-1" hidden>No — this is relationship education and coaching, built on the Twelve Ways of Love. It pairs beautifully with therapy, and many clients do both. If you’re in crisis, please reach out to a licensed mental-health professional first.</p>
+        <p class="faq__a" id="faq-1" hidden>No — this is relationship education and coaching, built on the Principles of Relationship Medicine® and The Twelve Ways of Love by Dr. Denny Thompson. It pairs beautifully with therapy, and many clients do both. If you’re in crisis, please reach out to a licensed mental-health professional first.</p>
       </div>
 
       <div class="faq__item">
         <button class="faq__q" type="button" aria-expanded="false" aria-controls="faq-2">
           <span>Do we both need to attend?</span><span class="faq__mark" aria-hidden="true">+</span>
         </button>
-        <p class="faq__a" id="faq-2" hidden>Not at all. Relationships change when one person starts loving differently. That said, when partners come together, the Code-mapping session tends to be a revelation for both.</p>
+        <p class="faq__a" id="faq-2" hidden>Not at all. When you change the way you look at relationships, the relationships you look at will change. That said, when partners come together, the Code-mapping session tends to be a revelation for both.</p>
       </div>
 
       <div class="faq__item">

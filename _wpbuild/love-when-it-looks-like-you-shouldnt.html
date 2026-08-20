@@ -212,6 +212,25 @@ button { font-family: inherit; }
 .body { font: 400 clamp(15px, 1.1vw, 16.5px)/1.7 var(--sans); color: var(--ink-72); margin: 0; }
 .fineprint { font: 400 13.5px/1.6 var(--sans); color: var(--ink-55); }
 
+/* Numbered offer list — the homepage "three ways to practise" block.
+   Counter-based so the numerals pick up the brand gold rather than the
+   browser's default marker colour. */
+.offer-list {
+  list-style: none; counter-reset: offer;
+  margin: 0 0 30px; padding: 0;
+}
+.offer-list li {
+  counter-increment: offer;
+  position: relative; padding-left: 34px; margin-bottom: 13px;
+  font: 400 15.5px/1.6 var(--sans); color: var(--ink-72);
+}
+.offer-list li::before {
+  content: counter(offer) ".";
+  position: absolute; left: 0; top: 0;
+  font: 600 16px var(--serif); color: var(--gold-deep);
+}
+.offer-list strong { color: var(--ink); font-weight: 600; }
+
 .on-dark .h1, .on-dark .h2, .on-dark .h3, .band--dark .h1, .band--dark .h2, .band--dark .h3 { color: var(--on-dark); }
 .band--dark .body, .band--dark .lede { color: rgba(245, 238, 224, .72); }
 
