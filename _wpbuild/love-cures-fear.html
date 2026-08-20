@@ -9,22 +9,11 @@ window.MLI_CONFIG = {
 };
 </script>
 
-<!-- Feedbucket: client review widget.
-     GATED so it never shows to the public on the live domain: it loads on the
-     staging hostname always, and on any hostname only for a visitor who arrived
-     via the client's ?feedbucketKey= review link (remembered per-tab). This is
-     the Driip IV rule (widget must not appear publicly) without breaking
-     Shamanie's existing review link after cutover. -->
-<script type="text/javascript">(function(k){try{
-  var q=new URLSearchParams(location.search).get('feedbucketKey');
-  if(q)sessionStorage.setItem('mliFbk','1');
-  var reviewer=q||sessionStorage.getItem('mliFbk');
-  var staging=/\.cloudwaysapps\.com$/.test(location.hostname);
-  if(!staging&&!reviewer)return;
-  var s=document.createElement('script');s.defer=true;s.src="https://cdn.feedbucket.app/assets/feedbucket.js";s.dataset.feedbucket=k;document.head.appendChild(s);
-}catch(e){}})('YZJpnQYntVd17FYyDT8j')</script>
-<!-- carry ?feedbucketKey= across internal links so the reviewer keeps the widget -->
-<script>(function(){try{var k=new URLSearchParams(location.search).get('feedbucketKey');if(!k)return;document.addEventListener('click',function(e){var a=e.target&&e.target.closest?e.target.closest('a'):null;if(!a)return;try{var u=new URL(a.href,location.origin);if(u.origin!==location.origin)return;if(!u.searchParams.get('feedbucketKey')){u.searchParams.set('feedbucketKey',k);a.href=u.toString();}}catch(err){}},true);}catch(e){}})();</script>
+<!-- Feedbucket removed 2026-08-20. The subscription was cancelled once Shamanie's
+     review was complete and implemented; Feedbucket warns that a site still carrying
+     the widget shows a pop-up to visitors after the billing period expires, so the
+     snippet is deleted rather than left gated. Her 18 items + screenshots are archived
+     in documents/website-build/feedbucket-archive/. -->
 
 <!-- GA4 — only on the live domain, so staging never pollutes the property -->
 <script>(function(){if(location.hostname!=='myloveintelligence.com'&&location.hostname!=='www.myloveintelligence.com')return;var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-YDVHBLJYPQ';document.head.appendChild(s);window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments);};gtag('js',new Date());gtag('config','G-YDVHBLJYPQ');})();</script>
